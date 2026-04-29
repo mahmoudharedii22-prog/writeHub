@@ -27,7 +27,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-   
+
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                     @auth
@@ -48,9 +48,10 @@
                 <div class="d-flex align-items-center gap-3">
 
                     <!-- SEARCH (NOW AT END) -->
-                    <form class="d-flex">
-                        <input class="form-control form-control-sm me-2" type="search" placeholder="Search"
-                            aria-label="Search">
+                    <form method="GET" action="{{ route('posts.search') }}" class="d-flex">
+                        <input class="form-control form-control-sm me-2" type="search" name="q"
+                            placeholder="Search posts...">
+
                         <button class="btn btn-outline-success btn-sm">
                             Search
                         </button>
@@ -74,14 +75,9 @@
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
 
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2" href="#">
+                                    <a class="dropdown-item d-flex align-items-center gap-2"
+                                        href="{{ route('profile.show', auth()->user()) }}">
                                         <i class="bi bi-person"></i> Profile
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                                        <i class="bi bi-gear"></i> Settings
                                     </a>
                                 </li>
 

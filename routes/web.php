@@ -14,3 +14,4 @@ Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::get('/home', [HomeController::class, 'index'])->name('home.index');
 Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('search', [HomeController::class, 'search'])->name('posts.search');

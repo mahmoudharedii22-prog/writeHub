@@ -2,7 +2,7 @@
 
     <div class="container py-4" style="max-width: 800px;">
 
-        <livewire:profile-page :user="$user" />
+        <livewire:profile-page :user="$user"/>
 
     </div>
 

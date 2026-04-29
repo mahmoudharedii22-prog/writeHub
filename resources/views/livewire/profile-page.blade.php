@@ -53,7 +53,7 @@
     <div>
 
         @if ($tab === 'posts')
-            <livewire:post-feed :user="$user" />
+            <livewire:feed-component :user="$user" />
         @else
             <livewire:like-feed :user="$user" />
         @endif

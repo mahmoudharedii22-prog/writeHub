@@ -18,7 +18,7 @@
         </div>
 
         <!-- Livewire Infinite Scroll Feed -->
-        <livewire:post-feed />
+        <livewire:feed-component />
 
     </div>
 
