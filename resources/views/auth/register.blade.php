@@ -1,7 +1,7 @@
 <x-auth-layout title="Register" subtitle="Create your account and start sharing">
 
 
-    <form method="POST" action="/register" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('register.store') }}" enctype="multipart/form-data">
         @csrf
 
 
@@ -21,7 +21,7 @@
             <x-validation-error name="username" />
         </div>
 
-    
+
         <div class="mb-3">
             <label class="form-label small fw-semibold">Email</label>
             <input type="email" name="email"
@@ -68,7 +68,7 @@
 
         <div class="text-center mt-3 small">
             Already have an account?
-            <a href="{{ route('login.show') }}" class="text-decoration-none fw-semibold">Login</a>
+            <a href="{{ route('login') }}" class="text-decoration-none fw-semibold">Login</a>
         </div>
 
     </form>

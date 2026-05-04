@@ -1,8 +1,12 @@
- <div>
-     <button wire:click="toggleFollow"
-         class="{{ auth()->user()->followings->contains($user_id) ? 'btn btn-danger btn-sm' : 'btn btn-primary btn-sm' }}">
+<div>
+    <button wire:click="toggleFollow" class="btn btn-sm"
+        style="
+            border-radius:20px;
+            padding:6px 14px;
+            font-weight:500;
+            {{ $isFollowing ? 'background:#ef4444; color:white;' : 'background:#4f46e5; color:white;' }}
+        ">
 
-         {{ auth()->user()->followings->contains($user_id) ? 'Unfollow' : 'Follow' }}
-
-     </button>
- </div>
+        {{ $isFollowing ? 'Unfollow' : 'Follow' }}
+    </button>
+</div>

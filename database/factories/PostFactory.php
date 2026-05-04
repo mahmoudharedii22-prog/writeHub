@@ -23,12 +23,7 @@ class PostFactory extends Factory
             'title' => $this->faker->sentence(),
             'content' => $this->faker->paragraphs(3, true),
             'image' => null,
-            'status' => $this->faker->randomElement(['draft', 'published']),
-            'visibility' => $this->faker->randomElement(['public', 'private', 'followers']),
-            'likes_count' => 0,
-            'comments_count' => 0,
             'edited_at' => null,
-            'published_at' => now(),
         ];
     }
 }

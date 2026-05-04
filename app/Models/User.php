@@ -40,7 +40,7 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'follows', 'following_id', 'user_id');
     }
 
-    public function followings()
+    public function following()
     {
         return $this->belongsToMany(User::class, 'follows', 'user_id', 'following_id');
     }
@@ -59,8 +59,8 @@ class User extends Authenticatable
 
     public function isFollowing(int $user_id)
     {
-        return $this->followings()->where('following_id', $user_id)->exists();
+        return $this->following()->where('following_id', $user_id)->exists();
     }
 
-    
+
 }

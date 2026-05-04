@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+    protected $fillable = ['title', 'content', 'user_id', 'image', 'status', 'visibility'];
     
     public function user()
     {
@@ -23,4 +24,5 @@ class Post extends Model
     {
         return $this->likes()->count();
     }
+   
 }

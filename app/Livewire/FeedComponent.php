@@ -10,69 +10,91 @@ use Livewire\Component;
 
 class FeedComponent extends Component
 {
-    public $query = null;
+    public $type = 'home';
 
-    public $user = null;
+    public $userId;
 
-    public $limit = 5;
+    public $query;
 
-    public $hasMore = true;
+    public $limit = 10;
 
-    public function mount($user = null, $query = null)
-    {
-        $this->user = $user;
-        $this->query = $query;
-    }
-
-    private function baseQuery()
-    {
-        return Post::with(['user', 'likes'])
-            ->withCount('likes')
-            ->latest()
-            ->when($this->user, fn ($q) => $q->where('user_id', $this->user->id))
-            ->when($this->query, function ($q) {
-                $q->where('content', 'like', "%{$this->query}%");
-            });
-    }
+    protected $listeners = [
+        'likeUpdated' => '$refresh',
+        'postUpdated' => '$refresh',
+    ];
 
     public function loadMore()
     {
         $this->limit += 10;
-
-        $count = $this->baseQuery()->count();
-
-        if ($this->limit >= $count) {
-            $this->hasMore = false;
-            $this->limit = $count;
-        }
     }
 
-    #[On('toggleLike')]
-    public function like($postId)
+    #[On('searchUpdated')]
+    public function searchUpdated($query)
     {
-        $post = Post::findOrFail($postId);
+        $this->type = 'search';
+        $this->query = $query;
+    }
 
-        $post->likes()->toggle(Auth::id());
+    public function getPostsProperty()
+    {
+        $followingIds = Auth::user()
+            ->following()
+            ->pluck('following_id');
+        $query = match ($this->type) {
+
+            'home' => Post::query()->whereIn('user_id', $followingIds->merge([Auth::id()])),
+
+            'explore' => Post::query()->whereNotIn('user_id', $followingIds->merge([Auth::id()])),
+
+            'profile' => Post::where('user_id', $this->userId),
+
+            'liked' => Post::whereHas('likes', function ($q) {
+                $q->where('user_id', $this->userId);
+            }),
+
+            'search' => Post::where('content', 'like', "%{$this->query}%"),
+
+            default => Post::query(),
+        };
+
+        return $query
+            ->with(['user'])
+            ->withCount(['likes'])
+            ->orderByDesc('likes_count')
+            ->orderByDesc('created_at')
+            ->limit($this->limit)
+            ->get();
+    }
+
+    #[On('postCreated')]
+    public function refreshFeed()
+    {
+        $this->reset('limit');
+        $this->dispatch('$refresh');
+    }
+
+    public function getHasMoreProperty()
+    {
+        return $this->posts->count() === $this->limit;
+    }
+
+    public function getUsersProperty()
+    {
+        if (! $this->query) {
+            return collect();
+        }
+
+        return User::where('username', 'like', "%{$this->query}%")
+            ->limit(5)
+            ->get();
     }
 
     public function render()
     {
-        $posts = $this->baseQuery()
-            ->take($this->limit)
-            ->get();
-
-        $users = collect();
-
-        if ($this->query) {
-            $users = User::where('username', 'like', "%{$this->query}%")
-                ->orWhere('name', 'like', "%{$this->query}%")
-                ->limit(5)
-                ->get();
-        }
-
         return view('livewire.feed-component', [
-            'posts' => $posts,
-            'users' => $users,
+            'posts' => $this->posts,
+            'hasMore' => $this->hasMore,
+            'users' => $this->users,
         ]);
     }
 }

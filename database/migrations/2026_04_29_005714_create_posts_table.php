@@ -16,15 +16,17 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
+
             $table->string('title')->nullable();
+
             $table->text('content');
+
             $table->string('image')->nullable();
-            $table->enum('status', ['draft', 'published'])->default('draft');
+
             $table->enum('visibility', ['public', 'private', 'followers'])->default('public');
-            $table->unsignedInteger('likes_count')->default(0);
-            $table->unsignedInteger('comments_count')->default(0);
+
             $table->timestamp('edited_at')->nullable();
-            $table->timestamp('published_at')->nullable();
+
             $table->timestamps();
         });
     }

@@ -36,7 +36,7 @@
   
         <div class="text-center mt-3 small">
             Don’t have an account?
-            <a href="{{ route('register.show') }}" class="text-decoration-none fw-semibold">
+            <a href="{{ route('register') }}" class="text-decoration-none fw-semibold">
                 Create account
             </a>
         </div>

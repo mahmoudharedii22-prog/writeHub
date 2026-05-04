@@ -13,6 +13,11 @@ class HomeController extends Controller
         return view('home.index');
     }
 
+    public function explore()
+    {
+        return view('home.explore');
+    }
+
     public function search(Request $request)
     {
         $query = $request->q;
